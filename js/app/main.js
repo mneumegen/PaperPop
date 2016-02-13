@@ -1,1 +1,4 @@
-console.log("HI DANA!!");
+define(function (require) {
+	var routes = require('./routes.js');
+
+});
