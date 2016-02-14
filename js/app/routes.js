@@ -1,13 +1,14 @@
 require(['vue', 'vue-router'], function(Vue, VueRouter) {
-	console.log('oaded');
+	console.log('loaded');
 	Vue.use(VueRouter);
 
 
-	var joinQuiz = {
+	var joinQuiz = new Vue({
+		el: '#content',
 		template: '#join-quiz',
 		data: function () {
 			return {
-				participantName: "",
+				participantName: "aaa",
 				code: ""
 			};
 		},
@@ -35,7 +36,101 @@ require(['vue', 'vue-router'], function(Vue, VueRouter) {
 				}
 			}
 		}
-	};
+	});
+
+	var viewQuiz = new Vue({
+		template: '#view-quiz',
+		data: function () {
+			return {
+				quiz: {
+				  "ownerId":1234,
+				  "shortCode":"X5DH3",
+				  "participants":[
+				    "Bill",
+				    "Dana",
+				    "Mike",
+				    "Donald"
+				  ],
+				  "createdAt":1455402950821,
+				  "startedAt":1455402950825,
+				  "questions":[
+				    {
+				      "startedAt":1455402950828,
+				      "question":"How old is Donald Trump?",
+				      "correctAnswer":69,
+				      "answers":[
+				        65,
+				        67,
+				        69,
+				        71
+				      ],
+				      "results":[
+				        {
+				          "participant":"Mike",
+				          "correct":false,
+				          "answeredAt":1455402950829
+				        },
+				        {
+				          "participant":"Dana",
+				          "correct":true,
+				          "answeredAt":1455402950830
+				        },
+				        {
+				          "participant":"Donald",
+				          "correct":true,
+				          "answeredAt":1455402950929
+				        },
+				        {
+				          "participant":"Bill",
+				          "correct":false,
+				          "answeredAt":1455402950926
+				        }
+				      ]
+				    },
+				    {
+				      "startedAt":null,
+				      "question":"How old is the Burn?",
+				      "correctAnswer":74,
+				      "answers":[
+				        69,
+				        72,
+				        74,
+				        78
+				      ],
+				      "results":[
+				      ]
+				    }
+				  ],
+				  "finished":false
+				}
+			};
+		},
+		computed: {
+
+		},
+
+		methods: {
+			randomizeAnswers: function() {
+				var answers = this.currentQuestion.answers;
+				for (var i = answers.length - 1; i > 0; i--) {
+					var j = Math.floor(Math.random() * (i + 1));
+					var temp = answers[i];
+					answers[i] = answers[j];
+					answers[j] = temp;
+			 	}
+				debugger
+			},
+			onNext: function () {
+			}
+		},
+
+		created: function() {
+			this.questions = this.quiz.questions;
+			this.currentQuestion = this.questions[0];
+			this.randomizeAnswers();
+		}
+	});
+
 
 	var App = Vue.extend({});
 
@@ -49,6 +144,9 @@ require(['vue', 'vue-router'], function(Vue, VueRouter) {
 			component: {
 				template: '<p>quiz is {{$route.params.quiz_id}}</p>'
 			}
+		},
+		'/live/view-quiz' : {
+			component: viewQuiz
 		}
 	});
 

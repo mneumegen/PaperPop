@@ -4,7 +4,7 @@ title: JOIN
 layout: default
 ---
 
-<template id="join-quiz" >
+<template id="join-quiz">
 	<form v-on:submit.stop.prevent="onSubmit">
 		<label for="code">Code</label>
 		<input id="code" v-model="code" type="text" name="code">
@@ -14,4 +14,22 @@ layout: default
 
 		<input type="submit" value="Join" />
 	</form>
+</template>
+
+<template id="view-quiz">
+	<div class="container-fluid">
+	  <div class="row text-center">
+	    <h2 class="responsive-size-large">
+	      {{ currentQuestion.questions }}
+	    </h2>
+	    <div class="responsive-size-medium">
+	      <ul class="center-block list-group">
+	        <li>A. {{ currentQuestion.answers[0] }} </li>
+	        <li>B. {{ currentQuestion.answers[1] }} </li>
+	        <li>C. {{ currentQuestion.answers[2] }} </li>
+	        <li>D. {{ currentQuestion.answers[3] }} </li>
+	    </p>
+	  </div>
+		<span class="glyphicon glyphicon-play large-play"></span>
+	</div>
 </template>
