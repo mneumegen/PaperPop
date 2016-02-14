@@ -1,0 +1,34 @@
+---
+permalink: /quiz-admin/
+title: Quiz Admin
+layout: default
+---
+
+{% raw %}
+	<template id="join-quiz" >
+		<form v-on:submit.stop.prevent="onSubmit">
+			<label for="code">Code</label>
+			<input id="code" v-model="code" type="text" name="code">
+
+			<input type="submit" value="Join" />
+		</form>
+	</template>
+
+	<template id="prestart" >
+		<div class="container-fluid">
+			<div class="row text-center">
+				<h2 class="responsive-size-medium">
+					Connect now on:
+				</h2>
+				<h1 class="responsive-size-large">
+					PaperPop.io/join
+				</h1>
+				<h2 class="responsive-size-medium">
+					and let's get started!
+				</h2>
+			</div>
+			<button class="center-block responsive-size-large bg-success" v-on="click: startQuiz"> Start </button>
+		</div>
+
+	</template>
+{% endraw %}

@@ -2,6 +2,7 @@
 permalink: /join/
 title: JOIN
 layout: default
+extra_js: "<script data-main='/js/join-quiz' src='/js/vendor/require.js'></script>"
 ---
 {% raw %}
 	<template id="join-quiz" >
@@ -16,24 +17,24 @@ layout: default
 		</form>
 	</template>
 
-	<template id="live-quiz" >
-		<p>hello - {{ testMike }}</p>
+	<template id="prestart" >
+		<p>Waiting for quiz to start</p>
 	</template>
 
-	<template id="view-quiz">
+	<template id="view-qui">
 		<div class="container-fluid">
-		  <div class="row text-center">
-		    <h2 class="responsive-size-large">
-		      {{ currentQuestion.questions }}
-		    </h2>
-		    <div class="responsive-size-medium">
-		      <ul class="center-block list-group">
-		        <li>A. {{ currentQuestion.answers[0] }} </li>
-		        <li>B. {{ currentQuestion.answers[1] }} </li>
-		        <li>C. {{ currentQuestion.answers[2] }} </li>
-		        <li>D. {{ currentQuestion.answers[3] }} </li>
-		    </p>
-		  </div>
+			<div class="row text-center">
+				<h2 class="responsive-size-large">
+					{{ currentQuestion.questions }}
+				</h2>
+				<div class="responsive-size-medium">
+					<ul class="center-block list-group">
+						<li>A. {{ currentQuestion.answers[0] }} </li>
+						<li>B. {{ currentQuestion.answers[1] }} </li>
+						<li>C. {{ currentQuestion.answers[2] }} </li>
+						<li>D. {{ currentQuestion.answers[3] }} </li>
+				</p>
+			</div>
 			<span class="glyphicon glyphicon-play large-play"></span>
 		</div>
 	</template>
