@@ -1,0 +1,78 @@
+---
+layout: default
+title: CREATE QUIZ
+---
+
+<script type="text/javascript">
+$(function() {
+	var ref = new Firebase("https://paperpopdev.firebaseio.com/"),
+		liveQuiz = ref.child('liveQuiz');
+
+	function makeid() {
+		var text = "";
+		var possible = "ABCDEFGHJKMNPRSTUVWXYZ23456789";
+
+		for( var i=0; i < 5; i++ ) {
+			text += possible.charAt(Math.floor(Math.random() * possible.length));
+		}
+
+		return text;
+	}
+
+	var shortCode = makeid(),
+	getUniqueQuiz = function(f, code) {
+		liveQuiz.orderByChild("shortCode").equalTo(code).once('value', f);
+	},
+
+	handleResult = function(result) {
+		if (result.val()) {
+			shortCode = makeid();
+			getUniqueQuiz(arguments.callee, shortCode);
+		} else {
+			createQuiz(shortCode);
+		}
+	},
+
+	createQuiz = function(code) {
+		console.log(code);
+		liveQuiz.push().set({
+			"ownerId":1234,
+			"shortCode": makeid(),
+			"participants":[],
+			"createdAt": Date.now(),
+			"startedAt": null,
+			"questions":[
+				{
+					"startedAt":null,
+					"question":"How old is Donald Trump?",
+					"correctAnswer":69,
+					"answers":[
+						65,
+						67,
+						69,
+						71
+					],
+					"results":[]
+				},
+				{
+					"startedAt": null,
+					"question":"How old is the Burn?",
+					"correctAnswer":74,
+					"answers":[
+						69,
+						72,
+						74,
+						78
+					],
+					"results":[
+					]
+				}
+			],
+			"finished":false
+		});
+	};
+
+	getUniqueQuiz(handleResult, shortCode);
+});
+
+</script>

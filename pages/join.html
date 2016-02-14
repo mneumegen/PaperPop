@@ -3,15 +3,21 @@ permalink: /join/
 title: JOIN
 layout: default
 ---
+{% raw %}
+	<template id="join-quiz" >
+		<form v-on:submit.stop.prevent="onSubmit">
+			<label for="code">Code</label>
+			<input id="code" v-model="code" type="text" name="code">
 
-<template id="join-quiz" >
-	<form v-on:submit.stop.prevent="onSubmit">
-		<label for="code">Code</label>
-		<input id="code" v-model="code" type="text" name="code">
+			<label for="participantName">Name</label>
+			<input id="participantName" v-model="participantName" type="text" name="participantName" value="{{ participantName }}">
 
-		<label for="participantName">Name</label>
-		<input id="participantName" v-model="participantName" type="text" name="participantName" value="{{ participantName }}">
+			<input type="submit" value="Join" />
+		</form>
+	</template>
 
-		<input type="submit" value="Join" />
-	</form>
-</template>
+	<template id="live-quiz" >
+		<p>hello - {{ testMike }}</p>
+	</template>
+
+{% endraw %}
