@@ -24,29 +24,6 @@ extra_js: "<script data-main='/js/join-quiz' src='/js/vendor/require.js'></scrip
 		<p>Waiting for quiz to start</p>
 	</template>
 
-	<template id="view-quiz">
-	  <div class="center-container">
-			<div class="row">
-		    <h2 class="text-center responsive-size-medium">
-		      {{ currentQuestion.question }}
-		    </h2>
-			</div>
-			<div class="row">
-		    <div class="col-md-6 text-center">
-	        <p class="responsive-size-medium">A. {{ currentQuestion.answers[0] }}</p>
-	        <p class="responsive-size-medium">B. {{ currentQuestion.answers[1] }}</p>
-		  	</div>
-				<div class="col-md-6 text-center">
-					<p class="responsive-size-medium">C. {{ currentQuestion.answers[2] }}</p>
-					<p class="responsive-size-medium">D. {{ currentQuestion.answers[3] }}</p>
-			</div>
-			<div class="text-center">
-				<span v-on:click="onNext" class="glyphicon glyphicon-play large-play"></span>
-			</div>
-		</div>
-	</div>
-</template>
-
 <template id="quiz-over">
 	<img src="http://www.etfroundup.com/wp-content/uploads/2014/11/thats_all_folks_wallpaper.jpg">
 </template>

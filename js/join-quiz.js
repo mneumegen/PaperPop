@@ -17,7 +17,7 @@ require(['vue', 'vue-router'], function(Vue, VueRouter) {
 		template: '#join-quiz',
 		data: function () {
 			return {
-				participantName: "aaa",
+				participantName: "",
 				code: ""
 			};
 		},
@@ -204,10 +204,13 @@ require(['vue', 'vue-router'], function(Vue, VueRouter) {
 		},
 		'/pending/:shortCode': {
 			component: pendingQuizComponent
+		},
+		'/live/:shortCode': {
+			component: liveQuizComponent
+		},
+		'/live/quiz-over': {
+			component: quizOverComponent
 		}
-		// '/live/:shortCode': {
-		// 	component: liveQuizComponent
-		// }
 	});
 
 	router.start(App, '#content');
