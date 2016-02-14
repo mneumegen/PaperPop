@@ -1,8 +1,9 @@
 require(['vue', 'vue-router', 'js-cookie'], function(Vue, VueRouter, Cookies) {
 	Vue.use(VueRouter);
+	Vue.config.debug = true
 
 	var ref = new Firebase("https://paperpopdev.firebaseio.com/"),
-		liveQuiz = ref.child('liveQuiz');
+	liveQuiz = ref.child('liveQuiz');
 
 	var joinQuizComponent = Vue.extend({
 		template: '#join-quiz',
@@ -58,6 +59,31 @@ require(['vue', 'vue-router', 'js-cookie'], function(Vue, VueRouter, Cookies) {
 		}
 	});
 
+	var quizOverComponent = Vue.extend({
+		template: '#quiz-over',
+		data: {
+		},
+		computed: {
+		},
+
+		methods: {
+		}
+	});
+
+	var playQuizComponent = Vue.extend({
+		template: '#play-quiz',
+		data: {
+		},
+		computed: {
+		},
+
+		methods: {
+			select: function(answer) {
+				// do something to save answer to firebase with user id? 
+			}
+		}
+	});
+
 	var liveQuizComponent = Vue.extend({
 		template: '#live-quiz',
 		data: function () {
@@ -98,7 +124,7 @@ require(['vue', 'vue-router', 'js-cookie'], function(Vue, VueRouter, Cookies) {
 		}
 	});
 
-	var viewQuiz = new Vue({
+	var viewQuizComponent = Vue.extend({
 		template: '#view-quiz',
 		data: function () {
 			return {
@@ -165,9 +191,6 @@ require(['vue', 'vue-router', 'js-cookie'], function(Vue, VueRouter, Cookies) {
 				}
 			};
 		},
-		computed: {
-
-		},
 
 		methods: {
 			randomizeAnswers: function() {
@@ -179,13 +202,26 @@ require(['vue', 'vue-router', 'js-cookie'], function(Vue, VueRouter, Cookies) {
 					answers[j] = temp;
 			 	}
 			},
-			onNext: function () {
+			onNext: function() {
+				if(this.index === this.questions.length - 1) {
+					this.endQuiz();
+				} else {
+					this.currentQuestion.question = '';
+					this.currentQuestion.answers = [];
+					this.index += 1;
+					this.currentQuestion = this.questions[this.index];
+					this.randomizeAnswers();
+				}
+			},
+			endQuiz: function() {
+				router.go({ path: '/live/quiz-over/'});
 			}
 		},
 
 		created: function() {
 			this.questions = this.quiz.questions;
-			this.currentQuestion = this.questions[0];
+			this.index = 0;
+			this.currentQuestion = this.questions[this.index];
 			this.randomizeAnswers();
 		}
 	});
@@ -200,6 +236,15 @@ require(['vue', 'vue-router', 'js-cookie'], function(Vue, VueRouter, Cookies) {
 		},
 		'/live/:shortCode': {
 			component: liveQuizComponent
+		},
+		'/live/view-quiz': {
+			component: viewQuizComponent
+		},
+		'/live/quiz-over': {
+			component: quizOverComponent
+		},
+		'/live/play/:shortCode': {
+			component: playQuizComponent
 		}
 	});
 
