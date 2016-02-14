@@ -9,8 +9,9 @@ require(['vue', 'vue-router', 'js-cookie'], function(Vue, VueRouter, Cookies) {
 		template: '#join-quiz',
 		data: function () {
 			return {
-				participantName: "aaa",
-				code: ""
+				participantName: "",
+				code: "",
+				error: "",
 			};
 		},
 		computed: {
@@ -79,7 +80,7 @@ require(['vue', 'vue-router', 'js-cookie'], function(Vue, VueRouter, Cookies) {
 
 		methods: {
 			select: function(answer) {
-				// do something to save answer to firebase with user id? 
+				// do something to save answer to firebase with user id?
 			}
 		}
 	});

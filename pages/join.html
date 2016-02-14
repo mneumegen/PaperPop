@@ -5,15 +5,18 @@ layout: default
 ---
 {% raw %}
 	<template id="join-quiz" >
-		<form v-on:submit.stop.prevent="onSubmit">
-			<label for="code">Code</label>
-			<input id="code" v-model="code" type="text" name="code">
+		<div class="center-container">
+			<form v-on:submit.stop.prevent="onSubmit">
+				<ul>
+					<li> <label for="code">Code</label>
+					<input id="code" v-model="code" type="text" name="code"> </li>
 
-			<label for="participantName">Name</label>
-			<input id="participantName" v-model="participantName" type="text" name="participantName" value="{{ participantName }}">
+					<li> <label for="participantName">Name</label>
+					<input id="participantName" v-model="participantName" type="text" name="participantName" value="{{ participantName }}"> </li>
 
-			<input type="submit" value="Join" />
-		</form>
+					<input type="submit" value="Join" />
+			</form>
+		</div>
 	</template>
 
 	<template id="live-quiz" >
