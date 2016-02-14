@@ -1,5 +1,4 @@
-require(['vue', 'vue-router'], function(Vue, VueRouter) {
-	console.log('loaded');
+require(['vue', 'vue-router', 'js-cookie'], function(Vue, VueRouter, Cookies) {
 	Vue.use(VueRouter);
 
 	var ref = new Firebase("https://paperpopdev.firebaseio.com/"),
@@ -29,11 +28,24 @@ require(['vue', 'vue-router'], function(Vue, VueRouter) {
 
 		methods: {
 			onSubmit: function () {
+				console.log('submitted');
 				var parent = this;
 				if (this.isValid) {
-					liveQuiz.orderByChild("shortCode").equalTo(parent.code).once('value', function(snapshot) {
-						if (snapshot.val()) {
-							router.go({ path: '/live/' + parent.code});
+					liveQuiz.child(parent.code).once('value', function(snapshot) {
+						var quiz = snapshot.val();
+						if (snapshot.exists()) {
+							if (! (quiz.participants && parent.participantName in quiz.participants)) {
+								var storedNames = Cookies.getJSON('participantName');
+								if (storedNames === null) {
+									storedNames = {};
+								}
+								storedNames[parent.code] = parent.participantName;
+								Cookies.set('participantName', storedNames);
+								router.go({ path: '/live/' + parent.code});
+								console.log('hi');
+							} else {
+								console.log('name taken');
+							}
 						} else {
 							console.log('invalid');
 						}
@@ -50,19 +62,39 @@ require(['vue', 'vue-router'], function(Vue, VueRouter) {
 		template: '#live-quiz',
 		data: function () {
 			return {
-				testMike: "aa"
+				quiz: 'a'
 			};
 		},
 		init: function() {
-			var parent = this;
-			liveQuiz.orderByChild("shortCode").equalTo(parent.$route.params.shortCode).once('value', function(snapshot) {
-				if (snapshot.val() === null) {
-					router.go({ path: '/'});
-					console.log('not found');
+			var parent = this,
+			onDataLoad = function(snapshot) {
+				console.log('loaded');
+				var quiz = snapshot.val(),
+					shortCode = parent.$route.params.shortCode;
+				if (snapshot.exists()) {
+					var storedNames = Cookies.getJSON('participantName');
+					if (storedNames === '{}') {
+						storedNames = {};
+					}
+
+					if (shortCode in storedNames) {
+						if (! (quiz.participants && storedNames[shortCode] in quiz.participants)) {
+							liveQuiz.child(shortCode).child('participants').child(storedNames[shortCode]).set(true);
+						}
+					} else {
+						console.log('No name');
+						router.go({ path: '/'});
+						return;
+					}
+					parent.quiz = quiz;
 				} else {
-					console.log('found');
+					console.log('no quiz');
+					router.go({ path: '/'});
 				}
-			});
+			};
+
+			liveQuiz.child(parent.$route.params.shortCode).once('child_added', onDataLoad);
+			liveQuiz.child(parent.$route.params.shortCode).on('child_changed', onDataLoad);
 		}
 	});
 
@@ -146,7 +178,6 @@ require(['vue', 'vue-router'], function(Vue, VueRouter) {
 					answers[i] = answers[j];
 					answers[j] = temp;
 			 	}
-				debugger
 			},
 			onNext: function () {
 			}

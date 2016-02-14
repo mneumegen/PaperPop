@@ -19,13 +19,13 @@ $(function() {
 		return text;
 	}
 
-	var shortCode = makeid(),
+	var shortCode = '6X93W',
 	getUniqueQuiz = function(f, code) {
-		liveQuiz.orderByChild("shortCode").equalTo(code).once('value', f);
+		liveQuiz.child(code).once('value', f);
 	},
 
 	handleResult = function(result) {
-		if (result.val()) {
+		if (result.exists()) {
 			shortCode = makeid();
 			getUniqueQuiz(arguments.callee, shortCode);
 		} else {
@@ -33,11 +33,9 @@ $(function() {
 		}
 	},
 
-	createQuiz = function(code) {
-		console.log(code);
-		liveQuiz.push().set({
+	createQuiz = function(shortCode) {
+		liveQuiz.child(shortCode).set({
 			"ownerId":1234,
-			"shortCode": makeid(),
 			"participants":[],
 			"createdAt": Date.now(),
 			"startedAt": null,
